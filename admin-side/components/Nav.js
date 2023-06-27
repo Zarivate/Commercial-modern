@@ -1,10 +1,21 @@
 import React from "react";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function Nav() {
+  // To avoid repeating the same classnames, common ones are stored in variables to be reused instead
+  const inactiveLink = "flex gap-1 p-1";
+  // For these ones, spacing is very important as otherwise without the space at bg-white, the background
+  // wouldn't become white due to the classname being equal to "flex gap-1bg-white", which isn't a valid option
+  const activeLink = inactiveLink + " bg-white text-blue-700 rounded-l-lg";
+
+  // Router will be used to know which page the user is currently on and switch tab classname styles accordingly
+  const router = useRouter();
+  // The path name contains the current page the user is on so that is grabbed from the router
+  const { pathname } = router;
   return (
-    <aside className="text-white p-4">
-      <Link href={"/"} className="flex gap-1 mb-2">
+    <aside className="text-white p-4 pr-0">
+      <Link href={"/"} className="flex gap-1 mb-2 mr-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
@@ -22,7 +33,10 @@ function Nav() {
         <span>Admin Portal</span>
       </Link>
       <nav className="flex flex-col gap-2">
-        <Link href={"/"} className="flex gap-1">
+        <Link
+          href={"/"}
+          className={pathname === "/" ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -39,7 +53,10 @@ function Nav() {
           </svg>
           Dashboard
         </Link>
-        <Link href={"/"} className="flex gap-1">
+        <Link
+          href={"/orders"}
+          className={pathname.includes("/orders") ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -56,7 +73,10 @@ function Nav() {
           </svg>
           Orders
         </Link>
-        <Link href={"/"} className="flex gap-1">
+        <Link
+          href={"/products"}
+          className={pathname.includes("/products") ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
@@ -73,7 +93,10 @@ function Nav() {
           </svg>
           Products
         </Link>
-        <Link href={"/"} className="flex gap-1">
+        <Link
+          href={"/settings"}
+          className={pathname.includes("/settings") ? activeLink : inactiveLink}
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
