@@ -13,11 +13,25 @@ function NewProduct() {
     <Layout>
       <h1>New Product</h1>
       <label>Product Name</label>
-      <input type="text" placeholder="Product name goes here" />
+      <input
+        type="text"
+        placeholder="Product name goes here"
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
+      />
       <label>Description</label>
-      <textarea placeholder="Description goes here"></textarea>
+      <textarea
+        placeholder="Description goes here"
+        value={description}
+        onChange={(e) => setDescription(e.target.value)}
+      ></textarea>
       <label>Price (in USD)</label>
-      <input type="number" placeholder="Price goes here"></input>
+      <input
+        type="number"
+        placeholder="Price goes here"
+        value={price}
+        onChange={(e) => setPrice(e.target.value)}
+      ></input>
       <button className="btn-primary">Save</button>
     </Layout>
   );

@@ -17,7 +17,7 @@ export default function Component() {
             alt="user-profile"
             className="w-6 h-6"
           />
-          <span className="px-2">{session.user.email}</span>
+          <span className="px-2">{session?.user?.email}</span>
         </div>
       </div>
     </Layout>
