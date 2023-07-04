@@ -1,6 +1,6 @@
 // File that holds the model schema for the backend Mongo database
 
-import { Schema, model } from "mongoose";
+import { Schema, model, models } from "mongoose";
 
 const ProductSchema = new Schema({
   title: { type: String, required: true },
@@ -9,4 +9,5 @@ const ProductSchema = new Schema({
 });
 
 // Create the actual model, follows pattern of model('name of model', Schema )
-export const Product = model("Product", ProductSchema);
+// If a Product model already exists within models then use that, else create it
+export const Product = models.Product || model("Product", ProductSchema);

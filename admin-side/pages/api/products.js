@@ -23,4 +23,9 @@ export default async function productMake(req, res) {
     // Return the created productDoc variable
     res.json(productDoc);
   }
+
+  // Method to handle GET requests
+  if (method === "GET") {
+    res.json(await Product.find());
+  }
 }
