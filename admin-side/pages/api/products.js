@@ -26,6 +26,13 @@ export default async function productMake(req, res) {
 
   // Method to handle GET requests
   if (method === "GET") {
-    res.json(await Product.find());
+    // Check to see if a product id parameter was passed in the request
+    if (req.query?.id) {
+      // If so then return that specific product's information in json format
+      res.json(await Product.findOne({ _id: req.query.id }));
+    } else {
+      // If can't find it then just return all the products
+      res.json(await Product.find());
+    }
   }
 }
