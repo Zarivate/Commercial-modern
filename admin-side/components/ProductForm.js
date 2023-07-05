@@ -4,6 +4,9 @@ import axios from "axios";
 
 // This file handles the form used to create new products
 function ProductForm({
+  // The id is special in that it'll determine what kind of axios request is made. As it will be undefined
+  // if the form is accessed when creating a new product, as opposed to when it's editing a product.
+  _id,
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
@@ -20,13 +23,21 @@ function ProductForm({
   const [returnToProducts, setReturnToProducts] = useState(false);
 
   // Function that sends API request to make the product from the user input fields
-  async function makeProduct(e) {
+  async function saveProduct(e) {
     // Prevent page from reloading
     e.preventDefault();
     const data = { title, description, price };
 
-    await axios.post("/api/products", data);
+    // If there is a product id, then it should make a request to update the product
+    if (_id) {
+      // Send put request to update the product info. Will pass in a new object containing
+      // the already exisiting data alongside the id
+      await axios.put("/api/products", { ...data, _id });
+    } else {
+      // Make request to create the product
 
+      await axios.post("/api/products", data);
+    }
     // Once an admin has submitted a product to the backend, set that you'll want to return to the products page
     setReturnToProducts(true);
   }
@@ -37,7 +48,7 @@ function ProductForm({
   }
 
   return (
-    <form onSubmit={makeProduct}>
+    <form onSubmit={saveProduct}>
       <label>Product Name</label>
       <input
         type="text"

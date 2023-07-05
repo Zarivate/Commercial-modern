@@ -29,8 +29,9 @@ export default function EditProductPage() {
 
   return (
     <Layout>
-      {/* Send the product info to the ProductForm component to be displayed */}
-      <ProductForm {...productInfo} />
+      <h1>Edit Product</h1>
+      {/* Send the product info to the ProductForm component to be displayed. Only load form once the data has been loaded. */}
+      {productInfo && <ProductForm {...productInfo} />}
     </Layout>
   );
 }

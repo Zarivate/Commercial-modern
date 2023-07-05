@@ -35,4 +35,15 @@ export default async function productMake(req, res) {
       res.json(await Product.find());
     }
   }
+
+  // Method to handle PUT requests, will update existing product info
+  if (method === "PUT") {
+    // Grab the passed in data fields from the request body
+    const { title, description, price, _id } = req.body;
+
+    // Update one specific product using it's id to identify it. Goes by the pattern of {object}, followed by the fileds you want to update.
+    // Note: should technically be {_id:_id} and {title:title, description:description, price:price} but have same name so can shorthand it
+    await Product.updateOne({ _id }, { title, description, price });
+    res.json(true);
+  }
 }
