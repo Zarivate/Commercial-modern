@@ -48,6 +48,26 @@ function ProductForm({
     router.push("/products");
   }
 
+  async function uploadImages(e) {
+    e.preventDefault();
+
+    // Get the upload files stored within the event
+    const files = e.target?.files;
+
+    // If the files' length is greater than 0, that means a file does exist
+    if (files?.length > 0) {
+      // The files will be sent as FormData as opposed to JSON so parser in backend can be easier
+      const data = new FormData();
+
+      // For each file, append it's information to the data object
+      files.forEach((file) => data.append("file", file));
+
+      // Send post request to upload the files. Product won't be updated, instead will simply be uploading images.
+      const res = await axios.post("/api/upload", data);
+      console.log(res);
+    }
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <label>Product Name</label>
@@ -59,6 +79,34 @@ function ProductForm({
       />
       <label>Photos</label>
       <div className="mb-2">
+        <label
+          className="w-24 h-24 rounded-lg flex-col border text-center 
+        flex 
+        items-center 
+        justify-center 
+        text-lg 
+        gap-1 
+        text-gray-900 
+        bg-gray-400 
+        cursor-pointer"
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            stroke-width="1.5"
+            stroke="currentColor"
+            class="w-6 h-6"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"
+            />
+          </svg>
+          Upload
+          <input type="file" className="hidden" onChange={uploadImages} />
+        </label>
         {!images?.length && <div>This product has no images</div>}
       </div>
       <label>Description</label>
