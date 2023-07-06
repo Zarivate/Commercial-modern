@@ -10,6 +10,7 @@ function ProductForm({
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
+  images,
 }) {
   // Router to be used to redirect page
   const router = useRouter();
@@ -56,6 +57,10 @@ function ProductForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      <label>Photos</label>
+      <div className="mb-2">
+        {!images?.length && <div>This product has no images</div>}
+      </div>
       <label>Description</label>
       <textarea
         placeholder="Description goes here"

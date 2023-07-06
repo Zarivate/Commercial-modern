@@ -46,4 +46,14 @@ export default async function productMake(req, res) {
     await Product.updateOne({ _id }, { title, description, price });
     res.json(true);
   }
+
+  // Method to handle deletion of a post
+  if (method === "DELETE") {
+    // If there exists a product id within the request query parameters
+    if (req.query?.id) {
+      // Then delete this specific product
+      await Product.deleteOne({ _id: req.query.id });
+      res.json(true);
+    }
+  }
 }
