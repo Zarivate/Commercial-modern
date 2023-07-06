@@ -60,10 +60,15 @@ function ProductForm({
       const data = new FormData();
 
       // For each file, append it's information to the data object
-      files.forEach((file) => data.append("file", file));
+      for (const file of files) {
+        data.append("file", file);
+      }
 
       // Send post request to upload the files. Product won't be updated, instead will simply be uploading images.
-      const res = await axios.post("/api/upload", data);
+      const res = await fetch("/api/upload", {
+        method: "POST",
+        body: data,
+      });
       console.log(res);
     }
   }
@@ -99,7 +104,7 @@ function ProductForm({
             class="w-6 h-6"
           >
             <path
-              stroke-linecap="round"
+              strokeLinecap="round"
               stroke-linejoin="round"
               d="M9 8.25H7.5a2.25 2.25 0 00-2.25 2.25v9a2.25 2.25 0 002.25 2.25h9a2.25 2.25 0 002.25-2.25v-9a2.25 2.25 0 00-2.25-2.25H15m0-3l-3-3m0 0l-3 3m3-3V15"
             />
