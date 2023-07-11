@@ -10,7 +10,7 @@ function ProductForm({
   title: currentTitle,
   description: currentDescription,
   price: currentPrice,
-  images,
+  images: exisitingImages,
 }) {
   // Router to be used to redirect page
   const router = useRouter();
@@ -19,6 +19,9 @@ function ProductForm({
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
+
+  // State to hold images for the product
+  const [images, setImages] = useState(exisitingImages || []);
 
   // State to determine whether to return to the product page or not
   const [returnToProducts, setReturnToProducts] = useState(false);
@@ -65,11 +68,13 @@ function ProductForm({
       }
 
       // Send post request to upload the files. Product won't be updated, instead will simply be uploading images.
-      const res = await fetch("/api/upload", {
-        method: "POST",
-        body: data,
+      const res = await axios.post("/api/upload", data);
+
+      // Set the images to be whatever existing images are already there and any new links in the response
+      setImages((oldImages) => {
+        return [...oldImages, ...res.data.links];
       });
-      console.log(res);
+      console.log(res.data);
     }
   }
 
@@ -84,6 +89,13 @@ function ProductForm({
       />
       <label>Photos</label>
       <div className="mb-2">
+        {images?.length &&
+          images.map((link) => (
+            <div key={link}>
+              {link}
+              <img src={link} className="h-24" />
+            </div>
+          ))}
         <label
           className="w-24 h-24 rounded-lg flex-col border text-center 
         flex 
