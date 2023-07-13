@@ -28,7 +28,7 @@ function Products() {
         </thead>
         <tbody>
           {products.map((product) => (
-            <tr>
+            <tr key={product._id}>
               <td>{product.title}</td>
               <td>
                 {/* Button to link to that specific product's edit page */}

@@ -1,6 +1,8 @@
 import React, { useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
+import Spinner from "./Spinner";
+import { ReactSortable } from "react-sortablejs";
 
 // This file handles the form used to create new products
 function ProductForm({
@@ -25,6 +27,9 @@ function ProductForm({
 
   // State to determine whether to return to the product page or not
   const [returnToProducts, setReturnToProducts] = useState(false);
+
+  // State to determine whether to display a loading image or not
+  const [isLoading, setIsLoading] = useState(false);
 
   // Function that sends API request to make the product from the user input fields
   async function saveProduct(e) {
@@ -59,6 +64,7 @@ function ProductForm({
 
     // If the files' length is greater than 0, that means a file does exist
     if (files?.length > 0) {
+      setIsLoading(true);
       // The files will be sent as FormData as opposed to JSON so parser in backend can be easier
       const data = new FormData();
 
@@ -75,8 +81,12 @@ function ProductForm({
         // Return a new array of all pre-existing images alongside any new links found
         return [...oldImages, ...res.data.links];
       });
-      console.log(res.data);
+      setIsLoading(false);
     }
+  }
+
+  function updateImageOrder(images) {
+    setImages(images);
   }
 
   return (
@@ -90,12 +100,23 @@ function ProductForm({
       />
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
-        {!!images?.length &&
-          images.map((link) => (
-            <div key={link} className="h-24">
-              <img src={link} alt="" className="rounded-lg" />
-            </div>
-          ))}
+        <ReactSortable
+          list={images}
+          setList={updateImageOrder}
+          className="flex flex-wrap gap-1"
+        >
+          {!!images?.length &&
+            images.map((link) => (
+              <div key={link} className="h-24">
+                <img src={link} alt="" className="rounded-lg" />
+              </div>
+            ))}
+        </ReactSortable>
+        {isLoading && (
+          <div className="h-24 flex items-center">
+            <Spinner />
+          </div>
+        )}
         <label
           className="w-24 h-24 rounded-lg flex-col border text-center 
         flex 
@@ -124,7 +145,6 @@ function ProductForm({
           Upload
           <input type="file" className="hidden" onChange={uploadImages} />
         </label>
-        {!images?.length && <div>This product has no images</div>}
       </div>
       <label>Description</label>
       <textarea
