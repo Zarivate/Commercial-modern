@@ -12,13 +12,14 @@ export default async function productMake(req, res) {
   // If the method is a POST request, then create a product from the data
   if (method === "POST") {
     // Get the data fields from the payload
-    const { title, description, price } = req.body;
+    const { title, description, price, images } = req.body;
 
     // Attempt to create a product from the passed in data fields and store it within a productDoc variable
     const productDoc = await Product.create({
       title,
       description,
       price,
+      images,
     });
     // Return the created productDoc variable
     res.json(productDoc);
@@ -39,11 +40,11 @@ export default async function productMake(req, res) {
   // Method to handle PUT requests, will update existing product info
   if (method === "PUT") {
     // Grab the passed in data fields from the request body
-    const { title, description, price, _id } = req.body;
+    const { title, description, price, images, _id } = req.body;
 
     // Update one specific product using it's id to identify it. Goes by the pattern of {object}, followed by the fileds you want to update.
     // Note: should technically be {_id:_id} and {title:title, description:description, price:price} but have same name so can shorthand it
-    await Product.updateOne({ _id }, { title, description, price });
+    await Product.updateOne({ _id }, { title, description, price, images });
     res.json(true);
   }
 

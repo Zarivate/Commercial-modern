@@ -30,7 +30,7 @@ function ProductForm({
   async function saveProduct(e) {
     // Prevent page from reloading
     e.preventDefault();
-    const data = { title, description, price };
+    const data = { title, description, price, images };
 
     // If there is a product id, then it should make a request to update the product
     if (_id) {
@@ -72,6 +72,7 @@ function ProductForm({
 
       // Set the images to be whatever existing images are already there and any new links in the response
       setImages((oldImages) => {
+        // Return a new array of all pre-existing images alongside any new links found
         return [...oldImages, ...res.data.links];
       });
       console.log(res.data);
@@ -88,12 +89,11 @@ function ProductForm({
         onChange={(e) => setTitle(e.target.value)}
       />
       <label>Photos</label>
-      <div className="mb-2">
-        {images?.length &&
+      <div className="mb-2 flex flex-wrap gap-2">
+        {!!images?.length &&
           images.map((link) => (
-            <div key={link}>
-              {link}
-              <img src={link} className="h-24" />
+            <div key={link} className="h-24">
+              <img src={link} alt="" className="rounded-lg" />
             </div>
           ))}
         <label
