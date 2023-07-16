@@ -56,3 +56,11 @@ table.basic a {
 .btn-default {
   @apply bg-gray-500;
 }
+
+.logout {
+  @apply flex gap-1 p-1;
+}
+
+.logout:hover {
+  @apply bg-white text-blue-700 rounded-l-lg;
+}
