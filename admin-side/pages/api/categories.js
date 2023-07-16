@@ -36,4 +36,13 @@ export default async function handle(req, res) {
     );
     res.json(categoryDoc);
   }
+
+  // Method to handle deletion
+  if (method === "DELETE") {
+    // Grab the category id from the passed in request url
+    const { _id } = req.query;
+    // Then delete this specific product
+    await Category.deleteOne({ _id });
+    res.json("ok");
+  }
 }

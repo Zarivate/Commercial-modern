@@ -1,8 +1,9 @@
 import Layout from "@/components/Layout";
 import axios from "axios";
 import React, { useState, useEffect } from "react";
+import { withSwal } from "react-sweetalert2";
 
-export default function Categories() {
+function Categories({ swal }) {
   const [editSession, setEditSession] = useState(null);
 
   // Variable to hold user input for new category name, if there is one
@@ -53,6 +54,33 @@ export default function Categories() {
     setName(category.name);
     // Because parent can be an object, have to check for the id to be properly set
     setParentCategory(category.parent?._id);
+  }
+
+  // Function to handle deleting a category, uses entire category object just as before although now with a sweet alert for confirmation
+  function deleteCategory(category) {
+    // Ask if the user is sure they want to delete the category
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: `Do you want to delete ${category.name}?`,
+        showCancelButton: true,
+        cancelButtonText: "Cancel",
+        confirmButtonText: "Yes, Delete.",
+        confirmButtonColor: "#d55",
+        reverseButtons: true,
+        icon: "warning",
+      })
+      // If so then make a request to delete it from the backend
+      .then(async (result) => {
+        // Check if the isConfirmed property is true, if so means user clicked on confirmation button
+        if (result.isConfirmed) {
+          // Grab the id from category
+          const { _id } = category;
+          // Because _id has no body, instead pass it through the url request
+          await axios.delete("/api/categories?_id=" + _id);
+          fetchCategories();
+        }
+      });
   }
 
   return (
@@ -108,7 +136,12 @@ export default function Categories() {
                   >
                     Edit
                   </button>
-                  <button className="btn-primary">Delete</button>
+                  <button
+                    className="btn-primary"
+                    onClick={() => deleteCategory(category)}
+                  >
+                    Delete
+                  </button>
                 </td>
               </tr>
             ))}
@@ -117,3 +150,5 @@ export default function Categories() {
     </Layout>
   );
 }
+
+export default withSwal(({ swal }, ref) => <Categories swal={swal} />);
