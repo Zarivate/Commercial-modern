@@ -4,7 +4,6 @@ import { useSession, signIn, signOut } from "next-auth/react";
 export default function Layout({ children }) {
   const { data: session } = useSession();
 
-  console.log(session);
   if (!session) {
     return (
       <div className="bg-blue-900 w-screen h-screen flex  items-center">
