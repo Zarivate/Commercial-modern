@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRouter } from "next/router";
 import axios from "axios";
 import Spinner from "./Spinner";
@@ -13,6 +13,7 @@ function ProductForm({
   description: currentDescription,
   price: currentPrice,
   images: exisitingImages,
+  category: existingCategory,
 }) {
   // Router to be used to redirect page
   const router = useRouter();
@@ -21,6 +22,7 @@ function ProductForm({
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
   const [price, setPrice] = useState(currentPrice || "");
+  const [category, setCategory] = useState(existingCategory || "");
 
   // State to hold images for the product
   const [images, setImages] = useState(exisitingImages || []);
@@ -31,11 +33,20 @@ function ProductForm({
   // State to determine whether to display a loading image or not
   const [isLoading, setIsLoading] = useState(false);
 
+  // State to hold categories
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    axios.get("/api/categories").then((result) => {
+      setCategories(result.data);
+    });
+  }, []);
+
   // Function that sends API request to make the product from the user input fields
   async function saveProduct(e) {
     // Prevent page from reloading
     e.preventDefault();
-    const data = { title, description, price, images };
+    const data = { title, description, price, images, category };
 
     // If there is a product id, then it should make a request to update the product
     if (_id) {
@@ -98,6 +109,14 @@ function ProductForm({
         value={title}
         onChange={(e) => setTitle(e.target.value)}
       />
+      <label>Category</label>
+      <select value={category} onChange={(e) => setCategory(e.target.value)}>
+        <option value="">None</option>
+        {categories.length > 0 &&
+          categories.map((category) => (
+            <option value={category._id}>{category.name}</option>
+          ))}
+      </select>
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable

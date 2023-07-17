@@ -106,7 +106,7 @@ function Categories({ swal }) {
           value={parentCategory}
         >
           <option value="">No parent category</option>
-          {categories.length &&
+          {categories.length > 0 &&
             categories.map((category) => (
               <option value={category._id}>{category.name}</option>
             ))}

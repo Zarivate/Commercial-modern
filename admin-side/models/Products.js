@@ -1,12 +1,13 @@
 // File that holds the model schema for the backend Mongo database
 
-import { Schema, model, models } from "mongoose";
+import mongoose, { Schema, model, models } from "mongoose";
 
 const ProductSchema = new Schema({
   title: { type: String, required: true },
   description: String,
   price: { type: Number, required: true },
   images: [{ type: String }],
+  category: { type: mongoose.Types.ObjectId, ref: "Category" },
 });
 
 // Create the actual model, follows pattern of model('name of model', Schema )
