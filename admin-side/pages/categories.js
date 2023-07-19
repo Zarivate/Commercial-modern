@@ -15,6 +15,9 @@ function Categories({ swal }) {
   // Variable to hold all the categories
   const [categories, setCategories] = useState([]);
 
+  // Variable to hold any possible properties
+  const [properties, setProperties] = useState([]);
+
   // UseEffect to grab all the categories at the start
   useEffect(() => {
     fetchCategories();
@@ -29,7 +32,7 @@ function Categories({ swal }) {
 
   // Function that saves any new category or user edited info
   async function saveInfo(e) {
-    const data = { name, parentCategory };
+    const data = { name, parentCategory, properties };
     e.preventDefault();
 
     // If there is currently an edit going on
@@ -83,6 +86,37 @@ function Categories({ swal }) {
       });
   }
 
+  // Function to handle any addition of properties to a category
+  function addProperty() {
+    setProperties((prev) => {
+      return [...prev, { name: "", values: "" }];
+    });
+  }
+
+  function handlePropertyNameChange(index, property, newName) {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].name = newName;
+      return properties;
+    });
+  }
+
+  function handlePropertyValuesChange(index, property, newValues) {
+    setProperties((prev) => {
+      const properties = [...prev];
+      properties[index].values = newValues;
+      return properties;
+    });
+  }
+
+  function removeProperty(indexToRemove) {
+    setProperties((prev) => {
+      return [...prev].filter((property, propertyIndex) => {
+        return propertyIndex !== indexToRemove;
+      });
+    });
+  }
+
   return (
     <Layout>
       <h1>Categories</h1>
@@ -91,62 +125,125 @@ function Categories({ swal }) {
           ? `Edit category ${editSession.name}`
           : "Create new category"}
       </label>
-      <form onSubmit={saveInfo} className="flex gap-1">
-        <input
-          className="mb-0"
-          type="text"
-          placeholder={"Example name"}
-          onChange={(e) => setName(e.target.value)}
-          value={name}
-        />
-        {/* This is so a user can select a parent element for their category to make it a sub category */}
-        <select
-          className="mb-0"
-          onChange={(e) => setParentCategory(e.target.value)}
-          value={parentCategory}
-        >
-          <option value="">No parent category</option>
-          {categories.length > 0 &&
-            categories.map((category) => (
-              <option value={category._id}>{category.name}</option>
+      <form onSubmit={saveInfo}>
+        <div className="flex gap-1">
+          <input
+            type="text"
+            placeholder={"Example name"}
+            onChange={(e) => setName(e.target.value)}
+            value={name}
+          />
+          {/* This is so a user can select a parent element for their category to make it a sub category */}
+          <select
+            onChange={(e) => setParentCategory(e.target.value)}
+            value={parentCategory}
+          >
+            <option value="">No parent category</option>
+            {categories.length > 0 &&
+              categories.map((category) => (
+                <option value={category._id}>{category.name}</option>
+              ))}
+          </select>
+        </div>
+        <div className="mb-2">
+          <label className="block">Properties</label>
+          <button
+            type="button"
+            onClick={addProperty}
+            className="btn-default text-sm mb-2"
+          >
+            Add new property
+          </button>
+          {properties.length > 0 &&
+            properties.map((property, index) => (
+              <div className="flex gap-1 mb-2">
+                <input
+                  type="text"
+                  value={property.name}
+                  className="mb-0"
+                  placeholder="property name"
+                  onChange={(e) =>
+                    handlePropertyNameChange(index, property, e.target.value)
+                  }
+                />
+                <input
+                  type="text"
+                  value={property.values}
+                  className="mb-0"
+                  placeholder="example, example 2, example 3, etc"
+                  onChange={(e) =>
+                    handlePropertyValuesChange(index, property, e.target.value)
+                  }
+                />
+                <button
+                  type="button"
+                  onClick={() => removeProperty(index)}
+                  className="btn-default"
+                >
+                  Remove
+                </button>
+              </div>
             ))}
-        </select>
-        <button type="submit" className="btn-primary py-1">
-          Save
-        </button>
+        </div>
+        <div className="flex gap-1">
+          {/* If there is an edit session going on, display the cancel and save button. By now the table should be hidden and the two
+          buttons will act as either  */}
+          {editSession && (
+            <button
+              type="button"
+              // If they choose to cancel, then the edit session state will be set to false, causing the table to reappear and the name and
+              // parent category values will be reset to empty
+              onClick={() => {
+                setEditSession(null);
+                setName("");
+                setParentCategory("");
+              }}
+              className="btn-default"
+            >
+              Cancel
+            </button>
+          )}
+          <button type="submit" className="btn-primary py-1">
+            Save
+          </button>
+        </div>
       </form>
-      <table className="basic mt-4">
-        <thead>
-          <tr>
-            <td>Category Name</td>
-            <td>Parent</td>
-            <td></td>
-          </tr>
-        </thead>
-        <tbody>
-          {categories.length &&
-            categories.map((category) => (
-              <tr>
-                <td>{category.name}</td>
-                <td>{category?.parent?.name}</td>
-                <td>
-                  <button
-                    onClick={() => editCategory(category)}
-                    className="btn-primary mr-1"
-                  >
-                    Edit
-                  </button>
-                  <button
-                    className="btn-primary"
-                    onClick={() => deleteCategory(category)}
-                  >
-                    Delete
-                  </button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      {/* Checks to see if an active edit session is going on, if so then will hide the table so user can focus on current category being edited.
+          Else if there is no active edit session, will display entire table */}
+      {!editSession && (
+        <table className="basic mt-4">
+          <thead>
+            <tr>
+              <td>Category Name</td>
+              <td>Parent</td>
+              <td></td>
+            </tr>
+          </thead>
+          <tbody>
+            {categories.length &&
+              categories.map((category) => (
+                <tr>
+                  <td>{category.name}</td>
+                  <td>{category?.parent?.name}</td>
+                  <td>
+                    <button
+                      onClick={() => editCategory(category)}
+                      className="btn-primary mr-1"
+                    >
+                      Edit
+                    </button>
+                    <button
+                      className="btn-primary"
+                      onClick={() => deleteCategory(category)}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      )}
     </Layout>
   );
 }
