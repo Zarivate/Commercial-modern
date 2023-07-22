@@ -32,7 +32,16 @@ function Categories({ swal }) {
 
   // Function that saves any new category or user edited info
   async function saveInfo(e) {
-    const data = { name, parentCategory, properties };
+    const data = {
+      name,
+      parentCategory,
+      // To simplify things, the properties data is broken down where for each property an object is returned consisting
+      // of of the name alongside it's corresponding values. This will result in an array of objects being sent over
+      properties: properties.map((property) => ({
+        name: property.name,
+        values: property.values.split(","),
+      })),
+    };
     e.preventDefault();
 
     // If there is currently an edit going on
@@ -48,6 +57,7 @@ function Categories({ swal }) {
 
     setName("");
     setParentCategory("");
+    setProperties([]);
     fetchCategories();
   }
 
@@ -57,6 +67,7 @@ function Categories({ swal }) {
     setName(category.name);
     // Because parent can be an object, have to check for the id to be properly set
     setParentCategory(category.parent?._id);
+    setProperties(categories.properties);
   }
 
   // Function to handle deleting a category, uses entire category object just as before although now with a sweet alert for confirmation
