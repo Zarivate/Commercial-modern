@@ -18,6 +18,9 @@ function ProductForm({
   // Router to be used to redirect page
   const router = useRouter();
 
+  // Variable to hold all the properties of the current product to be displayed on page later
+  const propertiesToFill = [];
+
   // States to hold the user input field values
   const [title, setTitle] = useState(currentTitle || "");
   const [description, setDescription] = useState(currentDescription || "");
@@ -100,6 +103,23 @@ function ProductForm({
     setImages(images);
   }
 
+  // If their is a current category id and there is something within categories,
+  if (categories.length > 0 && category) {
+    // Find the info for the category with the matching id within categories
+    let selectedCatInfo = categories.find(({ _id }) => _id === category);
+    propertiesToFill.push(...selectedCatInfo.properties);
+    // This is to also get any and all parent properties. This is a while loop in the event that the parent category
+    // has itself a parent category with even more properties that need to be displayed.
+    while (selectedCatInfo?.parent?._id) {
+      const parentCategory = categories.find(
+        ({ _id }) => _id === selectedCatInfo?.parent?._id
+      );
+      propertiesToFill.push(...parentCategory.properties);
+      // For the sake of a parent category having a parent of it's own, the current category is set to the parent
+      selectedCatInfo = parentCategory;
+    }
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <label>Product Name</label>
@@ -117,6 +137,18 @@ function ProductForm({
             <option value={category._id}>{category.name}</option>
           ))}
       </select>
+      {/* Will display any and all properties of the current product, be the product a parent or child of it */}
+      {propertiesToFill.length > 0 &&
+        propertiesToFill.map((property) => (
+          <div className="flex gap-1">
+            <div>{property.name}</div>
+            <select>
+              {property.values.map((val) => (
+                <option value={val}>{val}</option>
+              ))}
+            </select>
+          </div>
+        ))}
       <label>Photos</label>
       <div className="mb-2 flex flex-wrap gap-2">
         <ReactSortable

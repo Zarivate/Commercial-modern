@@ -26,7 +26,7 @@ export default async function handle(req, res) {
 
   // If the method is a PUT request, just update the already existing data
   if (method == "PUT") {
-    const { name, parentCategory, _id, properties } = req.body;
+    const { name, parentCategory, properties, _id } = req.body;
     const categoryDoc = await Category.updateOne(
       { _id },
       {

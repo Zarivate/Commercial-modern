@@ -32,6 +32,7 @@ function Categories({ swal }) {
 
   // Function that saves any new category or user edited info
   async function saveInfo(e) {
+    e.preventDefault();
     const data = {
       name,
       parentCategory,
@@ -42,7 +43,6 @@ function Categories({ swal }) {
         values: property.values.split(","),
       })),
     };
-    e.preventDefault();
 
     // If there is currently an edit going on
     if (editSession) {
@@ -67,7 +67,12 @@ function Categories({ swal }) {
     setName(category.name);
     // Because parent can be an object, have to check for the id to be properly set
     setParentCategory(category.parent?._id);
-    setProperties(categories.properties);
+    setProperties(
+      category.properties.map(({ name, values }) => ({
+        name,
+        values: values.join(","),
+      }))
+    );
   }
 
   // Function to handle deleting a category, uses entire category object just as before although now with a sweet alert for confirmation
@@ -208,6 +213,7 @@ function Categories({ swal }) {
                 setEditSession(null);
                 setName("");
                 setParentCategory("");
+                setProperties([]);
               }}
               className="btn-default"
             >
