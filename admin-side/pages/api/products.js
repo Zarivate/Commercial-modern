@@ -12,7 +12,8 @@ export default async function productMake(req, res) {
   // If the method is a POST request, then create a product from the data
   if (method === "POST") {
     // Get the data fields from the payload
-    const { title, description, price, images, category } = req.body;
+    const { title, description, price, images, category, properties } =
+      req.body;
 
     // Attempt to create a product from the passed in data fields and store it within a productDoc variable
     const productDoc = await Product.create({

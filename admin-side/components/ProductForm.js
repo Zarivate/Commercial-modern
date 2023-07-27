@@ -27,6 +27,9 @@ function ProductForm({
   const [price, setPrice] = useState(currentPrice || "");
   const [category, setCategory] = useState(existingCategory || "");
 
+  // State that holds all the properties of the currently displayed product
+  const [productProperty, setProductProperty] = useState({});
+
   // State to hold images for the product
   const [images, setImages] = useState(exisitingImages || []);
 
@@ -49,7 +52,14 @@ function ProductForm({
   async function saveProduct(e) {
     // Prevent page from reloading
     e.preventDefault();
-    const data = { title, description, price, images, category };
+    const data = {
+      title,
+      description,
+      price,
+      images,
+      category,
+      properties: productProperty,
+    };
 
     // If there is a product id, then it should make a request to update the product
     if (_id) {
@@ -120,6 +130,15 @@ function ProductForm({
     }
   }
 
+  function changeProp(propName, newValue) {
+    // Grab previous values from the state, if there is any
+    setProductProperty((prev) => {
+      const newProductProperties = { ...prev };
+      newProductProperties[propName] = newValue;
+      return newProductProperties;
+    });
+  }
+
   return (
     <form onSubmit={saveProduct}>
       <label>Product Name</label>
@@ -142,7 +161,11 @@ function ProductForm({
         propertiesToFill.map((property) => (
           <div className="flex gap-1">
             <div>{property.name}</div>
-            <select>
+            {/* Whatever the user changes the property value to be, is grabbed and sent to be altered within the changeProp function */}
+            <select
+              value={productProperty[property.name]}
+              onChange={(e) => changeProp(property.name, e.target.value)}
+            >
               {property.values.map((val) => (
                 <option value={val}>{val}</option>
               ))}
