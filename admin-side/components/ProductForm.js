@@ -14,6 +14,7 @@ function ProductForm({
   price: currentPrice,
   images: exisitingImages,
   category: existingCategory,
+  properties: assignedProperties,
 }) {
   // Router to be used to redirect page
   const router = useRouter();
@@ -28,7 +29,9 @@ function ProductForm({
   const [category, setCategory] = useState(existingCategory || "");
 
   // State that holds all the properties of the currently displayed product
-  const [productProperty, setProductProperty] = useState({});
+  const [productProperty, setProductProperty] = useState(
+    assignedProperties || {}
+  );
 
   // State to hold images for the product
   const [images, setImages] = useState(exisitingImages || []);
