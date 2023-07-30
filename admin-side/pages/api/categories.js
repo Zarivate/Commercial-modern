@@ -1,11 +1,17 @@
 import { Category } from "@/models/Category";
 import { mongooseConnect } from "@/lib/mongoose";
+import { getServerSession } from "next-auth";
+import { authOptions } from "./auth/[...nextauth]";
 
 export default async function handle(req, res) {
   const { method } = req;
 
   // Attempt to connect to the database if not connected
   await mongooseConnect();
+
+  // Attempt to get the current user session so can check to see if is valid user
+  const session = await getServerSession(req, res, authOptions);
+  console.log(session);
 
   // If it's a POST request, attempt to make a document on the backend from the data
   if (method === "POST") {

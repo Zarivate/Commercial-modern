@@ -141,7 +141,7 @@ function Nav() {
           </svg>
           Settings
         </Link>
-        <button onClick={signOut} className="logout">
+        <button onClick={() => signOut()} className="logout">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
