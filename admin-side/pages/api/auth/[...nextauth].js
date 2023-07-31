@@ -1,4 +1,4 @@
-import NextAuth from "next-auth";
+import NextAuth, { getServerSession } from "next-auth";
 import GoogleProvider from "next-auth/providers/google";
 import { MongoDBAdapter } from "@auth/mongodb-adapter";
 import clientPromise from "@/lib/mongodb";
@@ -17,7 +17,6 @@ export const authOptions = {
   callbacks: {
     // This is to verify the user that's currently logged in to ensure only the exact person is accessing the admin portal
     session: ({ session, token, user }) => {
-      console.log({ session, token, user });
       // Check to see if the session email matches up with the designated admin email, if so allow them to log in else don't
       if (adminUser.includes(session?.user?.email)) {
         return session;
@@ -27,6 +26,14 @@ export const authOptions = {
     },
   },
 };
-export function isAuthorizes(req, res) {}
 
 export default NextAuth(authOptions);
+
+export async function isAuthorized(req, res) {
+  const session = await getServerSession(req, res, authOptions);
+  if (!adminUser.includes(session?.user?.email)) {
+    res.status(401);
+    res.end();
+    throw "Unauthorized user";
+  }
+}

@@ -8,22 +8,34 @@ function Nav() {
   const inactiveLink = "flex gap-1 p-1";
   // For these ones, spacing is very important as otherwise without the space at bg-white, the background
   // wouldn't become white due to the classname being equal to "flex gap-1bg-white", which isn't a valid option
-  const activeLink = inactiveLink + " bg-white text-blue-700 rounded-l-lg";
+  const activeLink = inactiveLink + " bg-white text-primary rounded-l-lg";
+
+  const inactiveIcon = "w-6 h-6";
+  const activeIcon = inactiveIcon + " text-primary";
 
   // Router will be used to know which page the user is currently on and switch tab classname styles accordingly
   const router = useRouter();
   // The path name contains the current page the user is on so that is grabbed from the router
   const { pathname } = router;
+
+  // Function that logs user out while redirecting them to main page so as to avoid any potential errors
+  async function logout() {
+    await router.push("/");
+    await signOut();
+  }
+
   return (
-    <aside className="text-white p-4 pr-0">
-      <Link href={"/"} className="flex gap-1 mb-2 mr-4">
+    <aside className="text-gray-500 p-4 pr-0">
+      <Link href={"/admin_portal"} className="flex gap-1 mb-2 mr-4">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           fill="none"
           viewBox="0 0 24 24"
           stroke-width="1.5"
           stroke="currentColor"
-          class="w-6 h-6"
+          className={
+            pathname.includes("/admin_portal") ? activeIcon : inactiveIcon
+          }
         >
           <path
             strokeLinecap="round"
@@ -44,7 +56,7 @@ function Nav() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            className={pathname === "/" ? activeIcon : inactiveIcon}
           >
             <path
               strokeLinecap="round"
@@ -64,7 +76,7 @@ function Nav() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            className={pathname.includes("/orders") ? activeIcon : inactiveIcon}
           >
             <path
               strokeLinecap="round"
@@ -84,7 +96,9 @@ function Nav() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            className={
+              pathname.includes("/products") ? activeIcon : inactiveIcon
+            }
           >
             <path
               strokeLinecap="round"
@@ -141,7 +155,7 @@ function Nav() {
           </svg>
           Settings
         </Link>
-        <button onClick={() => signOut()} className="logout">
+        <button onClick={logout} className="logout">
           <svg
             xmlns="http://www.w3.org/2000/svg"
             fill="none"

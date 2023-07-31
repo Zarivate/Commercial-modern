@@ -2,12 +2,17 @@ import multiparty from "multiparty";
 import { S3Client, PutObjectCommand } from "@aws-sdk/client-s3";
 import fs from "fs";
 import mime from "mime-types";
+import { mongooseConnect } from "@/lib/mongoose";
+import { isAuthorized } from "./auth/[...nextauth]";
 
 const bucketName = "nextjs-ecommerce-test";
 
 // Endpoint that handles file uploading, mainly just gives back links to images after have been uploaded
 
 export default async function handle(req, res) {
+  await mongooseConnect();
+  await isAuthorized(req, res);
+
   const form = new multiparty.Form();
 
   const { fields, files } = await new Promise((resolve, reject) => {

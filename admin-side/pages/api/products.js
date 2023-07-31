@@ -1,5 +1,6 @@
 import { mongooseConnect } from "@/lib/mongoose";
 import { Product } from "@/models/Products";
+import { isAuthorized } from "./auth/[...nextauth]";
 
 // File that handles any API calls to api/products, mainly for when a user wants to create a new product for now
 export default async function productMake(req, res) {
@@ -8,6 +9,8 @@ export default async function productMake(req, res) {
 
   // Attempt to connect to the database
   await mongooseConnect();
+
+  await isAuthorized(req, res);
 
   // If the method is a POST request, then create a product from the data
   if (method === "POST") {
