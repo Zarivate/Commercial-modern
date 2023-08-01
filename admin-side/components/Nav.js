@@ -2,13 +2,14 @@ import React from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { signOut } from "next-auth/react";
+import Logo from "./Logo";
 
-function Nav() {
+function Nav({ toggle }) {
   // To avoid repeating the same classnames, common ones are stored in variables to be reused instead
   const inactiveLink = "flex gap-1 p-1";
   // For these ones, spacing is very important as otherwise without the space at bg-white, the background
   // wouldn't become white due to the classname being equal to "flex gap-1bg-white", which isn't a valid option
-  const activeLink = inactiveLink + " bg-white text-primary rounded-l-lg";
+  const activeLink = inactiveLink + " bg-highlight text-black rounded-lg";
 
   const inactiveIcon = "w-6 h-6";
   const activeIcon = inactiveIcon + " text-primary";
@@ -25,26 +26,16 @@ function Nav() {
   }
 
   return (
-    <aside className="text-gray-500 p-4 pr-0">
-      <Link href={"/admin_portal"} className="flex gap-1 mb-2 mr-4">
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          fill="none"
-          viewBox="0 0 24 24"
-          stroke-width="1.5"
-          stroke="currentColor"
-          className={
-            pathname.includes("/admin_portal") ? activeIcon : inactiveIcon
-          }
-        >
-          <path
-            strokeLinecap="round"
-            stroke-linejoin="round"
-            d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5"
-          />
-        </svg>
-        <span>Admin Portal</span>
-      </Link>
+    <aside
+      className={
+        (toggle ? `left-0` : `-left-full`) +
+        " text-gray-500 top-0 p-4 fixed w-full h-full bg-bgAdmin -left-full md:static md:w-auto transition-all"
+      }
+    >
+      <div className="mb-4 mr-4">
+        <Logo />
+      </div>
+
       <nav className="flex flex-col gap-2">
         <Link
           href={"/"}
@@ -120,7 +111,7 @@ function Nav() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            class={pathname.includes("/categories") ? activeIcon : inactiveIcon}
           >
             <path
               stroke-linecap="round"
@@ -140,7 +131,9 @@ function Nav() {
             viewBox="0 0 24 24"
             stroke-width="1.5"
             stroke="currentColor"
-            class="w-6 h-6"
+            className={
+              pathname.includes("/settings") ? activeIcon : inactiveIcon
+            }
           >
             <path
               strokeLinecap="round"

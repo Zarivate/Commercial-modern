@@ -14,6 +14,8 @@ module.exports = {
       },
       colors: {
         primary: "#5542F6",
+        highlight: "#eae8fb",
+        bgAdmin: "#fbfafd",
       },
     },
   },
