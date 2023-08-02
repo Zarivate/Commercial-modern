@@ -47,9 +47,7 @@ export default function Layout({ children }) {
         </div>
         <div className="flex">
           <Nav toggle={toggleNav} />
-          <div className="bg-white flex-grow mt-2 mr-2 mb-2 rounded-lg p-2">
-            {children}
-          </div>
+          <div className="flex-grow p-4">{children}</div>
         </div>
       </div>
     );
