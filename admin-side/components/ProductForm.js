@@ -164,15 +164,17 @@ function ProductForm({
         propertiesToFill.map((property) => (
           <div className="flex gap-1">
             <div>{property.name}</div>
+            <div>
+              <select
+                value={productProperty[property.name]}
+                onChange={(e) => changeProp(property.name, e.target.value)}
+              >
+                {property.values.map((val) => (
+                  <option value={val}>{val}</option>
+                ))}
+              </select>
+            </div>
             {/* Whatever the user changes the property value to be, is grabbed and sent to be altered within the changeProp function */}
-            <select
-              value={productProperty[property.name]}
-              onChange={(e) => changeProp(property.name, e.target.value)}
-            >
-              {property.values.map((val) => (
-                <option value={val}>{val}</option>
-              ))}
-            </select>
           </div>
         ))}
       <label>Photos</label>
