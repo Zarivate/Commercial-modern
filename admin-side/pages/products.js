@@ -29,7 +29,10 @@ function Products() {
               <td>{product.title}</td>
               <td>
                 {/* Button to link to that specific product's edit page */}
-                <Link href={"/products/edit/" + product._id}>
+                <Link
+                  className="btn-default"
+                  href={"/products/edit/" + product._id}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"
@@ -41,7 +44,10 @@ function Products() {
                   </svg>
                   Edit
                 </Link>
-                <Link href={"/products/delete/" + product._id}>
+                <Link
+                  className="btn-red"
+                  href={"/products/delete/" + product._id}
+                >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
                     viewBox="0 0 24 24"

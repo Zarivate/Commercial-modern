@@ -162,8 +162,10 @@ function ProductForm({
       {/* Will display any and all properties of the current product, be the product a parent or child of it */}
       {propertiesToFill.length > 0 &&
         propertiesToFill.map((property) => (
-          <div className="flex gap-1">
-            <div>{property.name}</div>
+          <div className="">
+            <label>
+              {property.name[0].toUpperCase() + property.name.substring(1)}
+            </label>
             <div>
               <select
                 value={productProperty[property.name]}
@@ -186,7 +188,10 @@ function ProductForm({
         >
           {!!images?.length &&
             images.map((link) => (
-              <div key={link} className="h-24">
+              <div
+                key={link}
+                className="h-24 bg-white p-2 shadow-md rounded-md border border-gray-300"
+              >
                 <img src={link} alt="" className="rounded-lg" />
               </div>
             ))}
@@ -197,14 +202,16 @@ function ProductForm({
           </div>
         )}
         <label
-          className="w-24 h-24 rounded-lg flex-col border text-center 
+          className="w-24 h-24 rounded-md flex-col border text-center 
         flex 
         items-center 
         justify-center 
         text-lg 
         gap-1 
-        text-gray-900 
-        bg-gray-400 
+        text-primary
+        bg-white
+        shadow-md
+        border-primary
         cursor-pointer"
         >
           <svg
