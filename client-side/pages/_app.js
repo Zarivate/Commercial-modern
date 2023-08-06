@@ -1,19 +1,21 @@
 import { createGlobalStyle } from "styled-components";
-import { HelmetProvider } from "react-helmet-async";
-import { Helmet } from "react-helmet-async";
+import { Quicksand } from "next/font/google";
+
+const quicksand = Quicksand({
+  weight: "400",
+  subsets: ["latin"],
+});
 
 export default function App({ Component, pageProps }) {
   return (
-    <HelmetProvider>
+    <main className={quicksand.className}>
       <GlobalStyles />
       <Component {...pageProps} />
-    </HelmetProvider>
+    </main>
   );
 }
 
 const GlobalStyles = createGlobalStyle`
-@import url('https://fonts.googleapis.com/css2?family=Quicksand&display=swap');
-  
   body {
     padding: 0;
     margin: 0;
