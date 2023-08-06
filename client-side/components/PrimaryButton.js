@@ -36,7 +36,7 @@ export const BtnStyle = css`
       border: 1px solid #fff;
     `}
   ${(props) =>
-    props.primary &&
+    props.$primary &&
     css`
       background-color: #5542f6;
       border: 1px solid #5542f6;
