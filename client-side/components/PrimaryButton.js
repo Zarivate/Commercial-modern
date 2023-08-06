@@ -7,13 +7,14 @@ function Button({ children, ...additional }) {
 
 export default Button;
 
-const StyledBtn = styled.button`
+export const BtnStyle = css`
   border: 0;
   padding: 5px 15px;
   border-radius: 5px;
   cursor: pointer;
   display: inline-flex;
   align-items: center;
+  text-decoration: none;
   svg {
     height: 16px;
     margin-right: 5px;
@@ -50,4 +51,8 @@ const StyledBtn = styled.button`
         height: 20px;
       }
     `}
+`;
+
+const StyledBtn = styled.button`
+  ${BtnStyle}
 `;
