@@ -17,6 +17,7 @@ export default function App({ Component, pageProps }) {
 
 const GlobalStyles = createGlobalStyle`
   body {
+    background-color: #eee;
     padding: 0;
     margin: 0;
     font-family: 'Quicksand', sans-serif; 

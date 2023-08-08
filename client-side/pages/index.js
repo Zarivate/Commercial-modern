@@ -5,12 +5,14 @@ import { mongooseConnect } from "@/lib/mongoose";
 import React from "react";
 import NewProducts from "@/components/NewProducts";
 
-function HomePage({ featuredProduct }) {
+function HomePage({ featuredProduct, recentProducts }) {
+  console.log(recentProducts);
+
   return (
     <div>
       <Header />
       <Featured product={featuredProduct} />
-      <NewProducts />
+      <NewProducts products={recentProducts} />
     </div>
   );
 }
@@ -30,6 +32,9 @@ export async function getServerSideProps() {
     // Because a prop passed from getServerSideProps to the page props has to be an object compatible with JSON. Mongoose
     // model documents are not be default so instead it will be strignified first then parsed afterwards to be returned as
     // a proper object instead of just a string
-    props: { product: JSON.parse(JSON.stringify(featuredProduct)) },
+    props: {
+      featuredProduct: JSON.parse(JSON.stringify(featuredProduct)),
+      recentProducts: JSON.parse(JSON.stringify(recentProducts)),
+    },
   };
 }
