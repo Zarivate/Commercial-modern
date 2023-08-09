@@ -15,7 +15,7 @@ function ProductBox({ _id, title, description, price, images }) {
         <Title>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Button $primary>
+          <Button $primary outline>
             <CartIcon />
           </Button>
         </PriceRow>
