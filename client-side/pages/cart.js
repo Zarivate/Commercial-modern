@@ -3,13 +3,21 @@ import Center from "@/components/Center";
 import Header from "@/components/Header";
 import Button from "@/components/PrimaryButton";
 import Table from "@/components/Table";
+import Input from "@/components/Input";
 import axios from "axios";
 import React, { useContext, useEffect, useState } from "react";
 import { styled } from "styled-components";
 
 function CartPage() {
+  const [name, setName] = useState("");
+  const [city, setCity] = useState("");
+  const [postalCode, setPostalCode] = useState("");
+  const [email, setEmail] = useState("");
+  const [streetAddress, setStreetAddress] = useState("");
+  const [country, setCountry] = useState("");
+
   // Grab cart context
-  const { cartProducts, addProducts } = useContext(CartContext);
+  const { cartProducts, addProducts, removeProducts } = useContext(CartContext);
 
   // State to hold details of products beyond their ids
   const [products, setProducts] = useState([]);
@@ -20,12 +28,27 @@ function CartPage() {
       axios.post("/api/cart", { ids: cartProducts }).then((response) => {
         setProducts(response.data);
       });
+      // If there are no products, set the data to be just that, an empty array
+    } else {
+      setProducts([]);
     }
   }, [cartProducts]);
 
   // If a user wants more of the same product,
   function addDuplicate(id) {
     addProducts(id);
+  }
+
+  function removeProduct(id) {
+    removeProducts(id);
+  }
+
+  let total = 0;
+
+  for (const productID of cartProducts) {
+    const price =
+      products.find((product) => product._id === productID)?.price || 0;
+    total += price;
   }
 
   return (
@@ -57,7 +80,9 @@ function CartPage() {
                         {product.title}
                       </ProductInfoCell>
                       <td>
-                        <Button>-</Button>
+                        <Button onClick={() => removeProduct(product._id)}>
+                          -
+                        </Button>
                         <QuantitySpace>
                           {/* In order to get the quantity of an item, the id for the product is filtered through the cartProducts for any matching ones */}
                           {
@@ -76,6 +101,11 @@ function CartPage() {
                       </td>
                     </tr>
                   ))}
+                  <tr>
+                    <td></td>
+                    <td></td>
+                    <td>${total}</td>
+                  </tr>
                 </tbody>
               </Table>
             )}
@@ -83,11 +113,62 @@ function CartPage() {
           {!!cartProducts?.length && (
             <Box>
               <h2>Order Information</h2>
-              <input type="text" placeholder="Address"></input>
-              <input type="text" placeholder="Address 2"></input>
-              <Button $black $block>
-                Continue to Payment
-              </Button>
+              <form method="post" action="/api/checkout">
+                <Input
+                  type="text"
+                  placeholder="Name"
+                  value={name}
+                  name="name"
+                  onChange={(e) => setName(e.target.value)}
+                />
+                <CityBox>
+                  <Input
+                    type="text"
+                    placeholder="City"
+                    value={city}
+                    name="city"
+                    onChange={(e) => setCity(e.target.value)}
+                  />
+                  <Input
+                    type="text"
+                    placeholder="Postal Code"
+                    value={postalCode}
+                    name="postalCode"
+                    onChange={(e) => setPostalCode(e.target.value)}
+                  />
+                </CityBox>
+                <Input
+                  type="text"
+                  placeholder="Street Address"
+                  value={streetAddress}
+                  name="streetAddress"
+                  onChange={(e) => setStreetAddress(e.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder="Email"
+                  value={email}
+                  name="email"
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+                <Input
+                  type="text"
+                  placeholder="Country"
+                  value={country}
+                  name="country"
+                  onChange={(e) => setCountry(e.target.value)}
+                />
+                {/* So that the cart details are passed through in the form as well, a hidden input field is used. The data is just
+                an array of ids so it's passed through while being joined with commas. */}
+                <input
+                  type="hidden"
+                  name="products"
+                  value={cartProducts.join(",")}
+                />
+                <Button $black $block type="submit">
+                  Continue to Payment
+                </Button>
+              </form>
             </Box>
           )}
         </ColumnsWrapper>
@@ -111,6 +192,13 @@ const Box = styled.div`
   padding: 30px;
 `;
 
+// const OrderBox = styled.div`
+//   background-color: #fff;
+//   border-radius: 10px;
+//   padding: 30px;
+//   height: 380px;
+// `;
+
 const ProductInfoCell = styled.td`
   padding: 10px 0;
 `;
@@ -132,4 +220,9 @@ const ProductImageBox = styled.div`
 
 const QuantitySpace = styled.span`
   padding: 0 3px;
+`;
+
+const CityBox = styled.div`
+  display: flex;
+  gap: 5px;
 `;

@@ -29,9 +29,23 @@ function CartContextProvider({ children }) {
     setCartProducts((prev) => [...prev, productId]);
   }
 
+  function removeProducts(productId) {
+    // Since want to remove one product at a time that could be a duplicate and or the only product in the cart
+    setCartProducts((prev) => {
+      // Get the latest position of the passed in product id
+      const position = prev.indexOf(productId);
+      // Check to make sure it's not out of bounds
+      if (position !== -1) {
+        // Filter the existing items in the cart to remove any matching
+        return prev.filter((value, index) => index !== position);
+      }
+      return prev;
+    });
+  }
+
   return (
     <CartContext.Provider
-      value={{ cartProducts, setCartProducts, addProducts }}
+      value={{ cartProducts, setCartProducts, addProducts, removeProducts }}
     >
       {children}
     </CartContext.Provider>
