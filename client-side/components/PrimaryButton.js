@@ -21,6 +21,12 @@ export const BtnStyle = css`
     height: 16px;
     margin-right: 5px;
   }
+  ${(props) =>
+    props.$block &&
+    css`
+      display: block;
+      width: 100%;
+    `}
   /* Depending on the prop passed in, the styling will be slightly changed */
   ${(props) =>
     props.white &&
@@ -36,6 +42,21 @@ export const BtnStyle = css`
       background-color: transparent;
       color: #fff;
       border: 2px solid #fff;
+    `}
+    ${(props) =>
+    props.$black &&
+    !props.$outline &&
+    css`
+      background-color: #000;
+      color: #fff;
+    `}
+  ${(props) =>
+    props.$black &&
+    props.$outline &&
+    css`
+      background-color: transparent;
+      color: #000;
+      border: 2px solid #000;
     `}
   ${(props) =>
     props.$primary &&
