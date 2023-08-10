@@ -1,22 +1,26 @@
-import React from "react";
+import React, { useContext } from "react";
 import { styled } from "styled-components";
 import Button from "./PrimaryButton";
-import CartIcon from "@/icons/CartIcon";
+import Link from "next/link";
+import { CartContext } from "./CartContext";
 
 function ProductBox({ _id, title, description, price, images }) {
+  const productUrl = `/product/${_id}`;
+
+  const { addProducts } = useContext(CartContext);
   return (
     <ProductWrapper>
-      <Box>
+      <Box href={productUrl}>
         <div>
           <img src={images[0]} alt="" />
         </div>
       </Box>
       <ProductInfoBox>
-        <Title>{title}</Title>
+        <Title href={productUrl}>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Button $primary outline>
-            <CartIcon />
+          <Button $primary $outline onClick={() => addProducts(_id)}>
+            Add to cart
           </Button>
         </PriceRow>
       </ProductInfoBox>
@@ -26,7 +30,7 @@ function ProductBox({ _id, title, description, price, images }) {
 
 export default ProductBox;
 
-const Box = styled.div`
+const Box = styled(Link)`
   background-color: #fff;
   padding: 20px;
   height: 120px;
@@ -41,16 +45,19 @@ const Box = styled.div`
   }
 `;
 
-const Title = styled.h2`
-  //font-weight: normal;
+const Title = styled(Link)`
+  font-weight: bold;
   font-size: 0.9rem;
   margin: 0;
   text-align: center;
-  //margin-bottom: 5px;
+  color: inherit;
+  text-decoration: none;
+  margin-bottom: 5px;
 `;
 
 const ProductInfoBox = styled.div`
   margin-top: 5px;
+  text-align: center;
 `;
 
 const PriceRow = styled.div`
@@ -62,7 +69,7 @@ const PriceRow = styled.div`
 
 const Price = styled.div`
   font-size: 1.5rem;
-  font-weight: bold;
+  font-weight: 700;
 `;
 
 const ProductWrapper = styled.div``;

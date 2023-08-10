@@ -15,6 +15,8 @@ export const BtnStyle = css`
   display: inline-flex;
   align-items: center;
   text-decoration: none;
+  font-weight: semi-bold;
+  font-family: "Quicksand", sans-serif;
   svg {
     height: 16px;
     margin-right: 5px;
@@ -22,26 +24,34 @@ export const BtnStyle = css`
   /* Depending on the prop passed in, the styling will be slightly changed */
   ${(props) =>
     props.white &&
-    !props.outline &&
+    !props.$outline &&
     css`
       background-color: #fff;
       color: #000;
     `}
   ${(props) =>
     props.white &&
-    props.outline &&
+    props.$outline &&
     css`
       background-color: transparent;
       color: #fff;
-      border: 1px solid #fff;
+      border: 2px solid #fff;
     `}
   ${(props) =>
     props.$primary &&
-    !props.outline &&
+    !props.$outline &&
     css`
       background-color: #5542f6;
-      border: 1px solid #5542f6;
+      border: 2px solid #5542f6;
       color: #fff;
+    `}
+    ${(props) =>
+    props.$primary &&
+    props.$outline &&
+    css`
+      background-color: transparent;
+      border: 2px solid #5542f6;
+      color: #5542f6;
     `}
   ${(props) =>
     props.size === "lg" &&

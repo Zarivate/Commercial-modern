@@ -6,6 +6,7 @@ import ProductBox from "./ProductBox";
 function NewProducts({ products }) {
   return (
     <Center>
+      <Title>New Arrivals</Title>
       <ProductsGird>
         {products.map((product) => (
           <ProductBox {...product} />
@@ -20,6 +21,11 @@ export default NewProducts;
 const ProductsGird = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  gap: 30px;
-  padding-top: 30px;
+  gap: 20px;
+`;
+
+const Title = styled.h2`
+  font-size: 2rem;
+  margin: 20px 0 20px;
+  font-weight: 600;
 `;

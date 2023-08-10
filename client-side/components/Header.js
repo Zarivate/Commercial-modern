@@ -1,9 +1,13 @@
 import Link from "next/link";
-import React from "react";
+import React, { useContext } from "react";
 import { styled } from "styled-components";
 import Center from "./Center";
+import { CartContext } from "./CartContext";
 
 function Header() {
+  // Retrieve the contents of the cart using the created CartContext
+  const { cartProducts } = useContext(CartContext);
+
   return (
     <StyledHeader>
       <Center>
@@ -14,7 +18,7 @@ function Header() {
             <NavLink href={"/products"}>All products</NavLink>
             <NavLink href={"/categories"}>Categories</NavLink>
             <NavLink href={"/account"}>Account</NavLink>
-            <NavLink href={"/cart"}>Cart</NavLink>
+            <NavLink href={"/cart"}>Cart ({cartProducts.length})</NavLink>
           </SpacedNav>
         </Wrapper>
       </Center>

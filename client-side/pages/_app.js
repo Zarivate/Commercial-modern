@@ -1,8 +1,9 @@
 import { createGlobalStyle } from "styled-components";
 import { Quicksand } from "next/font/google";
+import CartContextProvider from "@/components/CartContext";
 
 const quicksand = Quicksand({
-  weight: "400",
+  weight: "500",
   subsets: ["latin"],
 });
 
@@ -10,7 +11,9 @@ export default function App({ Component, pageProps }) {
   return (
     <main className={quicksand.className}>
       <GlobalStyles />
-      <Component {...pageProps} />
+      <CartContextProvider>
+        <Component {...pageProps} />
+      </CartContextProvider>
     </main>
   );
 }

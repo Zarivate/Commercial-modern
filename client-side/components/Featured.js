@@ -1,11 +1,20 @@
-import React from "react";
+import React, { useContext } from "react";
 import Center from "./Center";
 import { styled } from "styled-components";
 import Button from "./PrimaryButton";
 import ButtonLink from "./ButtonLink";
 import CartIcon from "@/icons/CartIcon";
+import { CartContext } from "./CartContext";
 
 function Featured({ product }) {
+  // Function to addProducts to context is retrieved
+  const { addProducts } = useContext(CartContext);
+
+  function addFeaturedToCart() {
+    // Send the product id to the CartContext to be added with the already existing add function in CartContext
+    addProducts(product._id);
+  }
+
   return (
     <StyledDiv>
       <Center>
@@ -17,12 +26,12 @@ function Featured({ product }) {
               <ButtonWrapper>
                 <ButtonLink
                   href={`/products/${product._id}`}
-                  outline="true"
+                  $outline="true"
                   white="true"
                 >
                   Read more
                 </ButtonLink>
-                <Button $primary="true">
+                <Button white onClick={addFeaturedToCart}>
                   <CartIcon />
                   Add to cart
                 </Button>
