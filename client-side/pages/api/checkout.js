@@ -1,5 +1,8 @@
 import { mongooseConnect } from "@/lib/mongoose";
+import { Order } from "@/models/Order";
 import { Product } from "@/models/Products";
+
+const stripe = require("stripe")(process.env.STRIPE_SK);
 
 export default async function handler(req, res) {
   // This endpoint only accepts POST requests so make sure it is one before doing anything else,
@@ -9,15 +12,22 @@ export default async function handler(req, res) {
   }
 
   // Otherwise, grab the elemnents passed in through the req
-  const { name, email, city, postalCode, streetAddress, country, products } =
-    req.body;
+  const {
+    name,
+    email,
+    city,
+    postalCode,
+    streetAddress,
+    country,
+    cartProducts,
+  } = req.body;
 
   // Attempt to connect to the database
   await mongooseConnect();
 
   // Since the products array was passed in while being joined through commas,
   // can split them up at each comma to get every id.
-  const productIds = products.split(",");
+  const productIds = cartProducts;
 
   // In order to get all the unique Ids, a set converted to an array is made from the collected productIds
   const uniqueIds = [...new Set(productIds)];
@@ -41,11 +51,33 @@ export default async function handler(req, res) {
         price_data: {
           currency: "USD",
           product_data: { name: productInfo.title },
-          unit_amount: quantity * productInfo.price,
+          unit_amount: quantity * productInfo.price * 100,
         },
       });
     }
   }
 
-  res.json(line_items);
+  const orderDocument = await Order.create({
+    line_items,
+    name,
+    email,
+    city,
+    postalCode,
+    streetAddress,
+    country,
+    paid: false,
+  });
+
+  const session = await stripe.checkout.sessions.create({
+    line_items,
+    mode: "payment",
+    customer_email: email,
+    success_url: `${process.env.PUBLIC_URL}/cart?success=true`,
+    cancel_url: `${process.env.PUBLIC_URL}/cart?canceled=true`,
+    metadata: { orderId: orderDocument._id.toString() },
+  });
+
+  res.json({
+    url: session.url,
+  });
 }

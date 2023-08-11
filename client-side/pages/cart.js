@@ -43,6 +43,40 @@ function CartPage() {
     removeProducts(id);
   }
 
+  async function makePayment() {
+    const response = await axios.post("/api/checkout", {
+      name,
+      email,
+      city,
+      postalCode,
+      streetAddress,
+      country,
+      cartProducts,
+    });
+    // If there is a redirect url within the response, navigate to it
+    if (response.data.url) {
+      // Because it's outside of the React app it has to be done like this
+      window.location = response.data.url;
+    }
+  }
+
+  // Check to see if the order was successfully places using the url, if so return a simple success page
+  if (window.location.href.includes("success")) {
+    return (
+      <>
+        <Header />
+        <Center>
+          <ColumnsWrapper>
+            <Box>
+              <h1>Thank you for your order!</h1>
+              <p>Details have been sent to your email.</p>
+            </Box>
+          </ColumnsWrapper>
+        </Center>
+      </>
+    );
+  }
+
   let total = 0;
 
   for (const productID of cartProducts) {
@@ -113,62 +147,61 @@ function CartPage() {
           {!!cartProducts?.length && (
             <Box>
               <h2>Order Information</h2>
-              <form method="post" action="/api/checkout">
+              <Input
+                type="text"
+                placeholder="Name"
+                value={name}
+                name="name"
+                onChange={(e) => setName(e.target.value)}
+              />
+              <CityBox>
                 <Input
                   type="text"
-                  placeholder="Name"
-                  value={name}
-                  name="name"
-                  onChange={(e) => setName(e.target.value)}
-                />
-                <CityBox>
-                  <Input
-                    type="text"
-                    placeholder="City"
-                    value={city}
-                    name="city"
-                    onChange={(e) => setCity(e.target.value)}
-                  />
-                  <Input
-                    type="text"
-                    placeholder="Postal Code"
-                    value={postalCode}
-                    name="postalCode"
-                    onChange={(e) => setPostalCode(e.target.value)}
-                  />
-                </CityBox>
-                <Input
-                  type="text"
-                  placeholder="Street Address"
-                  value={streetAddress}
-                  name="streetAddress"
-                  onChange={(e) => setStreetAddress(e.target.value)}
+                  placeholder="City"
+                  value={city}
+                  name="city"
+                  onChange={(e) => setCity(e.target.value)}
                 />
                 <Input
                   type="text"
-                  placeholder="Email"
-                  value={email}
-                  name="email"
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Postal Code"
+                  value={postalCode}
+                  name="postalCode"
+                  onChange={(e) => setPostalCode(e.target.value)}
                 />
-                <Input
-                  type="text"
-                  placeholder="Country"
-                  value={country}
-                  name="country"
-                  onChange={(e) => setCountry(e.target.value)}
-                />
-                {/* So that the cart details are passed through in the form as well, a hidden input field is used. The data is just
-                an array of ids so it's passed through while being joined with commas. */}
-                <input
+              </CityBox>
+              <Input
+                type="text"
+                placeholder="Street Address"
+                value={streetAddress}
+                name="streetAddress"
+                onChange={(e) => setStreetAddress(e.target.value)}
+              />
+              <Input
+                type="text"
+                placeholder="Email"
+                value={email}
+                name="email"
+                onChange={(e) => setEmail(e.target.value)}
+              />
+              <Input
+                type="text"
+                placeholder="Country"
+                value={country}
+                name="country"
+                onChange={(e) => setCountry(e.target.value)}
+              />
+              {/* So that the cart details are passed through in the form as well, a hidden input field is used. The data is just
+                an array of ids so it's passed through while being joined with commas. This is unused after changing to using Axios.
+                Where data is split up in the backend api route instead.*/}
+              {/* <input
                   type="hidden"
                   name="products"
                   value={cartProducts.join(",")}
-                />
-                <Button $black $block type="submit">
-                  Continue to Payment
-                </Button>
-              </form>
+                /> */}
+              <Button $black $block onClick={makePayment}>
+                Continue to Payment
+              </Button>
             </Box>
           )}
         </ColumnsWrapper>
