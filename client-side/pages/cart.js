@@ -16,8 +16,11 @@ function CartPage() {
   const [streetAddress, setStreetAddress] = useState("");
   const [country, setCountry] = useState("");
 
+  const [success, setSuccess] = useState(false);
+
   // Grab cart context
-  const { cartProducts, addProducts, removeProducts } = useContext(CartContext);
+  const { cartProducts, addProducts, removeProducts, clearCart } =
+    useContext(CartContext);
 
   // State to hold details of products beyond their ids
   const [products, setProducts] = useState([]);
@@ -33,6 +36,17 @@ function CartPage() {
       setProducts([]);
     }
   }, [cartProducts]);
+
+  // Hook to make sure user products are removed from their cart after successful transaction
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return;
+    }
+    if (window.location.href.includes("success")) {
+      setSuccess(true);
+      clearCart();
+    }
+  }, []);
 
   // If a user wants more of the same product,
   function addDuplicate(id) {
@@ -61,7 +75,7 @@ function CartPage() {
   }
 
   // Check to see if the order was successfully places using the url, if so return a simple success page
-  if (window.location.href.includes("success")) {
+  if (success) {
     return (
       <>
         <Header />
