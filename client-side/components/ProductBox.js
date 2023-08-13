@@ -12,7 +12,7 @@ function ProductBox({ _id, title, description, price, images }) {
     <ProductWrapper>
       <Box href={productUrl}>
         <div>
-          <img src={images[0]} alt="" />
+          <img src={images?.[0]} alt="" />
         </div>
       </Box>
       <ProductInfoBox>

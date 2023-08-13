@@ -4,8 +4,7 @@ import { buffer } from "micro";
 
 const stripe = require("stripe")(process.env.STRIPE_SK);
 
-const endpointSecret =
-  "whsec_44521c2d612425844337ace27d302dc6307b7e26ccb43bd1928c621dfc2dd322";
+const endpointSecret = process.env.STRIPE_ENDPOINT;
 
 // Endpoint to handle checking whether payments were already maid or not so don't have to manually check each order
 export default async function handler(req, res) {
