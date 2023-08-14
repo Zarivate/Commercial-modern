@@ -19,7 +19,7 @@ function ProductBox({ _id, title, description, price, images }) {
         <Title href={productUrl}>{title}</Title>
         <PriceRow>
           <Price>${price}</Price>
-          <Button $primary $outline onClick={() => addProducts(_id)}>
+          <Button $block $primary $outline onClick={() => addProducts(_id)}>
             Add to cart
           </Button>
         </PriceRow>
@@ -61,15 +61,24 @@ const ProductInfoBox = styled.div`
 `;
 
 const PriceRow = styled.div`
-  display: flex;
+  display: block;
   align-items: center;
   justify-content: space-between;
   margin-top: 2px;
+  @media screen and (min-width: 768px) {
+    display: flex;
+    gap: 5px;
+  }
 `;
 
 const Price = styled.div`
-  font-size: 1.5rem;
-  font-weight: 700;
+  font-size: 1rem;
+  font-weight: 600;
+  @media screen and (min-width: 768px) {
+    font-size: 1.2rem;
+    font-weight: 600;
+    text-align: left;
+  }
 `;
 
 const ProductWrapper = styled.div``;

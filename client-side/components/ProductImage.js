@@ -33,7 +33,8 @@ export default ProductImage;
 const SmallerImages = styled.div`
   display: flex;
   gap: 10px;
-  flex-grow: 0;
+  align-items: center;
+  justify-content: space-between;
   margin-top: 10px;
 `;
 

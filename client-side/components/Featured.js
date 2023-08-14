@@ -25,7 +25,7 @@ function Featured({ product }) {
               <Desc>{product.description}</Desc>
               <ButtonWrapper>
                 <ButtonLink
-                  href={`/products/${product._id}`}
+                  href={`/product/${product._id}`}
                   $outline="true"
                   white="true"
                 >
@@ -39,10 +39,7 @@ function Featured({ product }) {
             </div>
           </ColumnDiv>
           <ColumnDiv>
-            <img
-              src="https://nextjs-ecommerce-test.s3.amazonaws.com/1689224694989.jpg"
-              alt="test-image"
-            />
+            <img src={product?.images[0]} alt="feat-image" />
           </ColumnDiv>
         </Wrapper>
       </Center>
@@ -61,7 +58,11 @@ const StyledDiv = styled.div`
 const Title = styled.h1`
   margin: 0;
   font-weight: normal;
-  font-size: 3rem;
+  font-size: 1.5rem;
+
+  @media screen and (min-width: 768px) {
+    font-size: 3rem;
+  }
 `;
 
 const Desc = styled.p`
@@ -71,10 +72,22 @@ const Desc = styled.p`
 
 const Wrapper = styled.div`
   display: grid;
-  grid-template-columns: 0.9fr 1.1fr;
+  grid-template-columns: 1fr;
   gap: 40px;
   img {
     max-width: 100%;
+    max-height: 200px;
+    display: block;
+    margin: 0 auto;
+  }
+  div: nth-child(1) {
+    order: 2;
+  }
+  @media screen and (min-width: 768px) {
+    grid-template-columns: 0.9fr 1.1fr;
+    div: nth-child(1) {
+      order: 0;
+    }
   }
 `;
 
