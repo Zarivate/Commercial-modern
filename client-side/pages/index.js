@@ -4,6 +4,7 @@ import { Product } from "@/models/Products";
 import { mongooseConnect } from "@/lib/mongoose";
 import React from "react";
 import NewProducts from "@/components/NewProducts";
+import Footer from "@/components/Footer";
 
 function HomePage({ featuredProduct, recentProducts }) {
   console.log(recentProducts);
@@ -13,6 +14,7 @@ function HomePage({ featuredProduct, recentProducts }) {
       <Header />
       <Featured product={featuredProduct} />
       <NewProducts products={recentProducts} />
+      <Footer />
     </div>
   );
 }
