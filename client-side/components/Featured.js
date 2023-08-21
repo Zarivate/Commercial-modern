@@ -27,11 +27,11 @@ function Featured({ product }) {
                 <ButtonLink
                   href={`/product/${product._id}`}
                   $outline="true"
-                  white="true"
+                  $white
                 >
                   Read more
                 </ButtonLink>
-                <Button white onClick={addFeaturedToCart}>
+                <Button $white onClick={addFeaturedToCart}>
                   <CartIcon />
                   Add to cart
                 </Button>
@@ -50,7 +50,7 @@ function Featured({ product }) {
 export default Featured;
 
 const StyledDiv = styled.div`
-  background-color: #222;
+  background-color: #101522;
   color: #fff;
   padding: 50px 0;
 `;

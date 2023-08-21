@@ -42,7 +42,7 @@ export default async function handle(req, res) {
     // TODO: Make this a more secure and unique key maybe
     const newFileName = Date.now() + "." + ext;
 
-    console.log({ ext, file });
+    // console.log({ ext, file });
     await client.send(
       new PutObjectCommand({
         Bucket: bucketName,

@@ -7,7 +7,7 @@ import NewProducts from "@/components/NewProducts";
 import Footer from "@/components/Footer";
 
 function HomePage({ featuredProduct, recentProducts }) {
-  console.log(recentProducts);
+  // console.log(recentProducts);
 
   return (
     <div>

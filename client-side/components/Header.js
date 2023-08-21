@@ -36,7 +36,7 @@ function Header() {
 export default Header;
 
 const StyledHeader = styled.header`
-  background-color: #222;
+  background-color: #101522;
 `;
 
 const Logo = styled(Link)`
@@ -73,7 +73,7 @@ const SpacedNav = styled.nav`
   left: 0;
   right: 0;
   padding: 70px 20px 20px;
-  background-color: #222;
+  background-color: #101522;
   @media screen and (min-width: 768px) {
     display: flex;
     position: static;

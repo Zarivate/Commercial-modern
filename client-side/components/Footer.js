@@ -29,78 +29,18 @@ const Footer = () => {
               <FooterLink to="/">Terms of Service</FooterLink>
             </FooterLinkItems>
             <FooterLinkItems>
-              <FooterLinkTitle>Contact Us</FooterLinkTitle>
-              <FooterLink to="/">Customer Support</FooterLink>
-              <FooterLink to="/">Email</FooterLink>
-              <FooterLink to="/">P.O Box</FooterLink>
-              <FooterLink to="/">Fax Machine</FooterLink>
+              <div>Hello</div>
             </FooterLinkItems>
           </FooterLinksWrapper>
           <FooterLinksWrapper>
             <FooterLinkItems>
-              <FooterLinkTitle>Employees</FooterLinkTitle>
-              <FooterLink to="/">Janitors</FooterLink>
-              <FooterLink to="/">Ambassadors</FooterLink>
-              <FooterLink to="/">Agency</FooterLink>
-              <FooterLink to="/">Influencer</FooterLink>
+              <div>Hello</div>
             </FooterLinkItems>
             <FooterLinkItems>
-              <FooterLinkTitle>Social Media</FooterLinkTitle>
-              <FooterLink to="/">Facebook</FooterLink>
-              <FooterLink to="/">Instagram</FooterLink>
-              <FooterLink to="/">Youtube</FooterLink>
-              <FooterLink to="/">Twitter</FooterLink>
-              <FooterLink to="/">LinkedIn</FooterLink>
+              <div>Hello</div>
             </FooterLinkItems>
           </FooterLinksWrapper>
         </FooterLinksContainer>
-        <SocialMedia>
-          <SocialMediaWrap>
-            <SocialLogo to="/Products" onClick={toggleHome}>
-              Turtle
-            </SocialLogo>
-            <WebsiteRights>
-              Turtle © {new Date().getFullYear()} All rights reserved.
-            </WebsiteRights>
-            <SocialIcons>
-              <SocialIconLink
-                href="Facebook.com"
-                target="_blank"
-                aria-label="Facebook"
-              >
-                <FaFacebook />
-              </SocialIconLink>
-              <SocialIconLink
-                href="Instagram.com"
-                target="_blank"
-                aria-label="Instagram"
-              >
-                <FaInstagram />
-              </SocialIconLink>
-              <SocialIconLink
-                href="Youtube.com"
-                target="_blank"
-                aria-label="Youtube"
-              >
-                <FaYoutube />
-              </SocialIconLink>
-              <SocialIconLink
-                href="Twitter.com"
-                target="_blank"
-                aria-label="Twitter"
-              >
-                <FaTwitter />
-              </SocialIconLink>
-              <SocialIconLink
-                href="Linkedin.com"
-                target="_blank"
-                aria-label="Linkedin"
-              >
-                <FaLinkedin />
-              </SocialIconLink>
-            </SocialIcons>
-          </SocialMediaWrap>
-        </SocialMedia>
       </FooterWrap>
     </FooterContainer>
   );

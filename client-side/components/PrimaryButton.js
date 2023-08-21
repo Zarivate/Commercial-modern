@@ -29,14 +29,14 @@ export const BtnStyle = css`
     `}
   /* Depending on the prop passed in, the styling will be slightly changed */
   ${(props) =>
-    props.white &&
+    props.$white &&
     !props.$outline &&
     css`
       background-color: #fff;
       color: #000;
     `}
   ${(props) =>
-    props.white &&
+    props.$white &&
     props.$outline &&
     css`
       background-color: transparent;
