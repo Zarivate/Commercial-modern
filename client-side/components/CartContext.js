@@ -45,6 +45,9 @@ function CartContextProvider({ children }) {
 
   function clearCart() {
     setCartProducts([]);
+    // Due to useEffect that persist the Cart while the user browses the store, the local storage needs to be
+    // cleared so that when context providers pulls from local storage to restore the cart, it finds nothing there.
+    ls.clear();
   }
 
   return (
