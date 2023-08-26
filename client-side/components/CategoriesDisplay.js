@@ -1,5 +1,6 @@
 import React from "react";
 import CategorySingle from "./CategorySingle";
+import { styled } from "styled-components";
 
 function CategoriesDisplay({ categories }) {
   return (

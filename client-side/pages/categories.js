@@ -12,7 +12,6 @@ function Categories({ categories }) {
       <Header>
         <Center>
           <Title>All Categories</Title>
-          <CategoriesDisplay categories={categories} />
           {console.log(categories)}
         </Center>
       </Header>
@@ -25,11 +24,11 @@ export default Categories;
 export async function getServerSideProps() {
   await mongooseConnect();
 
-  const categories = await Category.find({}, null, { sort: { _id: -1 } });
-
+  const categories = await Category.find();
+  console.log(categories);
   return {
     props: {
-      products: JSON.parse(JSON.stringify(categories)),
+      categories: JSON.parse(JSON.stringify(categories)),
     },
   };
 }
