@@ -9,12 +9,11 @@ import CategoriesDisplay from "@/components/CategoriesDisplay";
 function Categories({ categories }) {
   return (
     <>
-      <Header>
-        <Center>
-          <Title>All Categories</Title>
-          {console.log(categories)}
-        </Center>
-      </Header>
+      <Header />
+      <Center>
+        <Title>All Categories</Title>
+        <CategoriesDisplay categories={categories} />
+      </Center>
     </>
   );
 }
@@ -24,8 +23,8 @@ export default Categories;
 export async function getServerSideProps() {
   await mongooseConnect();
 
-  const categories = await Category.find();
-  console.log(categories);
+  const categories = await Category.find({}, null, { sort: { _id: -1 } });
+  console.log("Made it here in categories`");
   return {
     props: {
       categories: JSON.parse(JSON.stringify(categories)),
