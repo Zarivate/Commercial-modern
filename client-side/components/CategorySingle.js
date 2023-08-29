@@ -1,9 +1,21 @@
-import React from "react";
+import React, { useState } from "react";
 
-function CategorySingle({ category }) {
+function CategorySingle({ _id, name, parent, properties }) {
+  const [filterProperty, setFilterProperty] = useState("");
+
   return (
     <>
-      <div>Howdy</div>
+      <div>{_id}</div>
+      <div>{name}</div>
+      <div>{parent}</div>
+      {properties.map((property) => (
+        <>
+          <select key={_id}>{property.name}</select>
+          <select key={_id}>{property.values}</select>
+
+          <div>{property.values}</div>
+        </>
+      ))}
     </>
   );
 }

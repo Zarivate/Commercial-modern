@@ -13,6 +13,7 @@ function Categories({ categories }) {
       <Center>
         <Title>All Categories</Title>
         <CategoriesDisplay categories={categories} />
+        {console.log(categories)}
       </Center>
     </>
   );
