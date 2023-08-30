@@ -1,7 +1,14 @@
 import React, { useState } from "react";
+import Select from "react-select";
 
 function CategorySingle({ _id, name, parent, properties }) {
   const [filterProperty, setFilterProperty] = useState("");
+
+  const options = [
+    { value: "chocolate", label: "Chocolate" },
+    { value: "strawberry", label: "Strawberry" },
+    { value: "vanilla", label: "Vanilla" },
+  ];
 
   return (
     <>
@@ -10,8 +17,7 @@ function CategorySingle({ _id, name, parent, properties }) {
       <div>{parent}</div>
       {properties.map((property) => (
         <>
-          <select key={_id}>{property.name}</select>
-          <select key={_id}>{property.values}</select>
+          <Select options={options} />
 
           <div>{property.values}</div>
         </>
