@@ -1,6 +1,7 @@
 import { createGlobalStyle } from "styled-components";
 import { Quicksand } from "next/font/google";
 import CartContextProvider from "@/components/CartContext";
+import Footer from "@/components/Footer";
 
 const quicksand = Quicksand({
   weight: "500",

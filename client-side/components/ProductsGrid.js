@@ -4,6 +4,7 @@ import ProductBox from "./ProductBox";
 function ProductsGrid({ products }) {
   return (
     <StyledProductsGird>
+      {console.log(products)}
       {products.map((product) => (
         <ProductBox key={product._id} {...product} />
       ))}
